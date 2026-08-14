@@ -19,14 +19,15 @@ The canonical implementation is the fish function `new-project` in `/repos/dotfi
 
    Wait for them to confirm before continuing.
 
-2. **Pick the location.** New repos are cloned under `/home/repos` unless the user says otherwise.
+2. **Pick the location and name.** New repos live under `/repos` (entries there resolve to `/home/repos` — same directories). If the current directory is an empty subfolder of `/repos`, the project name is that folder's name and no argument is needed. Otherwise ask the user for a name and clone under `/repos`.
 
-3. **Run the function** with the project name the user gave (ask if they didn't give one):
+3. **Run the function:**
 
    ```
-   cd /home/repos && new-project <name>
+   new-project           # from an empty subfolder of /repos — infers the name
+   cd /repos && new-project <name>   # otherwise
    ```
 
-   This runs `gh repo create <name> --template working-open/project-starter --private --clone` followed by `devcontainer up --workspace-folder <name>`.
+   This runs `gh repo create <name> --template working-open/project-starter --private --clone` followed by `devcontainer up`.
 
 4. **Report the result**: the repo URL, the local path, and whether the devcontainer came up cleanly. If `devcontainer up` fails, show the error — it usually means Docker isn't running or the template's devcontainer config has an issue.
